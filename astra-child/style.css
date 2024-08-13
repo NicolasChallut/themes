@@ -11,3 +11,44 @@ Updated: 2024-02-01 11:07:01
 
 */
 
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Espacement de 10px entre les cards */
+    justify-content: center; /* Centrer les colonnes dans leur conteneur */
+}
+
+.photo-card {
+    width: 564px;
+    height: 495px;
+    background-color: #f5f5f5; /* Couleur de fond par défaut, peut être modifiée ou supprimée */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* Espacement vertical entre les cards */
+    box-sizing: border-box; /* Assure que padding et bordures sont inclus dans les dimensions */
+}
+
+/* Image à l'intérieur de la carte */
+.photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajuste l'image pour couvrir toute la carte sans déformation */
+    border: none; /* Supprime les bordures */
+    box-shadow: none; /* Supprime les ombres */
+}
+
+.header-image {
+    text-align: center; /* Centre l'image */
+    margin-bottom: 20px; /* Ajoute un espace en dessous de l'image */
+}
+
+.header-image img {
+    max-width: 100%;
+    height: auto; /* Assure que l'image est responsive */
+}
+
+.site-content .ast-container {
+    display: flex;
+    flex-direction: column;
+}
