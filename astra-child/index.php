@@ -13,32 +13,54 @@
  * @since 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
 }
 
-get_header(); ?>
-<?php if ( astra_page_layout() == 'left-sidebar' ) : ?>
+get_header(); // Inclut l'en-tête de votre thème
 
-	<?php get_sidebar(); ?>
+// URL de l'image à afficher au-dessus de la galerie
+$header_image_url = 'http://nathalie.local/wp-content/uploads/2024/08/nathalie-11-scaled.jpeg'; // Remplacez par l'URL de l'image que vous souhaitez afficher
 
-<?php endif ?>
-	<div id="primary" <?php astra_primary_class(); ?>>
-		<?php
-		astra_primary_content_top();
+// Afficher l'image au-dessus de la galerie
+if (!empty($header_image_url)) {
+    echo '<div class="header-image">';
+    echo '<img src="' . esc_url($header_image_url) . '" alt="Image d\'en-tête">';
+    echo '</div>';
+}
 
-		astra_content_loop();
+// Menus déroulants pour le tri
+$categories = array('', 'Réception', 'Concert', 'Mariage', 'Télévision'); // Les catégories de votre choix
+$formats = array('', 'portrait', 'paysage'); // Les formats de votre choix
+$dates = array('', 'les plus récentes', 'Les plus anciennes'); // Options de date
 
-		astra_pagination();
+echo '<div class="filter-controls">';
+echo '<form id="filter-form">';
+echo '<label for="category-filter">Catégorie :</label>';
+echo '<select id="category-filter" name="category">';
+foreach ($categories as $category) {
+    echo '<option value="' . strtolower($category) . '">' . $category . '</option>';
+}
+echo '</select>';
 
-		astra_primary_content_bottom();
-		?>
-	</div><!-- #primary -->
-<?php
-if ( astra_page_layout() == 'right-sidebar' ) :
+echo '<label for="format-filter">Format :</label>';
+echo '<select id="format-filter" name="format">';
+foreach ($formats as $format) {
+    echo '<option value="' . strtolower($format) . '">' . $format . '</option>';
+}
+echo '</select>';
 
-	get_sidebar();
+echo '<label for="date-filter">Date :</label>';
+echo '<select id="date-filter" name="date">';
+foreach ($dates as $date) {
+    echo '<option value="' . strtolower(str_replace(' ', '-', $date)) . '">' . $date . '</option>';
+}
+echo '</select>';
+echo '</form>';
+echo '</div>';
 
-endif;
+echo '<div id="photo-gallery" class="photo-gallery two-columns">';
+echo '</div>';
 
-get_footer();
+get_footer(); // Inclut le pied de page de votre thème
+?>

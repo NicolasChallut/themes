@@ -1,84 +1,66 @@
 <?php
 /*
-Template Name: Galerie Interactif en Deux Colonnes
+Template Name: Galerie Simple avec Tri
 */
+
 get_header(); // Inclut l'en-tête de votre thème
 
-// URL de l'image à afficher au-dessus de la galerie
-$header_image_url = 'http://nathalie.local/wp-content/uploads/2024/08/nathalie-11-scaled.jpeg'; // Remplacez par l'URL de l'image que vous souhaitez afficher
-
-// Afficher l'image au-dessus de la galerie
-if (!empty($header_image_url)) {
-    echo '<div class="header-image">';
-    echo '<img src="' . esc_url($header_image_url) . '" alt="Image d\'en-tête">';
-    echo '</div>';
-}
-
-// Configuration de la requête pour récupérer les images sélectionnées de la médiathèque
-$args = array(
-    'post_type' => 'attachment',
-    'post_mime_type' => 'image',
-    'post_status' => 'inherit',
-    'posts_per_page' => -1, // Récupérer toutes les images
-    'meta_query' => array(
-        array(
-            'key' => 'display_in_gallery', // Nom du champ personnalisé
-            'value' => '1', // Afficher seulement les images sélectionnées
-            'compare' => '='
-        )
-    )
+// Tableau de données pour les images
+$gallery_images = array(
+    array('file' => 'nathalie-0.jpeg', 'title' => 'Santé !', 'reference' => 'bf2385', 'category' => 'Réception', 'year' => 2019, 'format' => 'paysage', 'type' => 'Argentique'),
+    array('file' => 'nathalie-1.jpeg', 'title' => 'Et bon anniversaire !', 'reference' => 'bf2386', 'category' => 'Réception', 'year' => 2020, 'format' => 'paysage', 'type' => 'Argentique'),
+    array('file' => 'nathalie-2.jpeg', 'title' => "Let's party!", 'reference' => 'bf2387', 'category' => 'Concert', 'year' => 2021, 'format' => 'paysage', 'type' => 'Numérique'),
+    array('file' => 'nathalie-3.jpeg', 'title' => 'Tout est installé', 'reference' => 'bf2388', 'category' => 'Mariage', 'year' => 2019, 'format' => 'portrait', 'type' => 'Argentique'),
+    array('file' => 'nathalie-4.jpeg', 'title' => "Vers l'éternité", 'reference' => 'bf2389', 'category' => 'Mariage', 'year' => 2020, 'format' => 'portrait', 'type' => 'Numérique'),
+    // Ajoutez ici les autres images...
 );
 
-$query_images = new WP_Query($args);
+// Affichage du formulaire de tri
+echo '<div class="filter-controls">';
+echo '<form id="filter-form">';
+echo '<label for="category-filter">Catégorie :</label>';
+echo '<select id="category-filter" name="category">';
+echo '<option value="">Toutes</option>';
+echo '<option value="Réception">Réception</option>';
+echo '<option value="Concert">Concert</option>';
+echo '<option value="Mariage">Mariage</option>';
+echo '<option value="Télévision">Télévision</option>';
+echo '</select>';
 
-if ($query_images->have_posts()) :
-?>
+echo '<label for="format-filter">Format :</label>';
+echo '<select id="format-filter" name="format">';
+echo '<option value="">Tous</option>';
+echo '<option value="paysage">Paysage</option>';
+echo '<option value="portrait">Portrait</option>';
+echo '</select>';
 
-    <div class="photo-gallery two-columns">
-        <?php
-        $counter = 0; // Compteur pour gérer les colonnes
+echo '<label for="year-filter">Année :</label>';
+echo '<select id="year-filter" name="year">';
+echo '<option value="">Toutes</option>';
+echo '<option value="2022">2022</option>';
+echo '<option value="2021">2021</option>';
+echo '<option value="2020">2020</option>';
+echo '<option value="2019">2019</option>';
+echo '</select>';
+echo '</form>';
+echo '</div>';
 
-        while ($query_images->have_posts()) : $query_images->the_post();
-            // Récupérer les métadonnées des images
-            $image_id = get_the_ID();
-            $image_url = wp_get_attachment_url($image_id);
-            $image_title = get_the_title();
-            
-            // Les champs personnalisés pour chaque image
-            $image_reference = get_post_meta($image_id, 'image_reference', true);
-            $image_category = get_post_meta($image_id, 'image_category', true);
-            $image_year = get_post_meta($image_id, 'image_year', true);
-            $image_format = get_post_meta($image_id, 'image_format', true);
-            $image_type = get_post_meta($image_id, 'image_type', true);
-
-            // Ouvrir une nouvelle ligne si nécessaire
-            if ($counter % 2 == 0) {
-                echo '<div class="row">';
-            }
-        ?>
-            <div class="photo-card">
-                <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>">
-            </div>
-
-        <?php
-            $counter++;
-
-            // Fermer la ligne après deux colonnes
-            if ($counter % 2 == 0) {
-                echo '</div>'; // Fermeture de la ligne
-            }
-
-        endwhile;
-
-        // Si le dernier item ne ferme pas la ligne, fermez-la ici
-        if ($counter % 2 != 0) {
-            echo '</div>'; // Fermeture de la ligne incomplète
-        }
-        ?>
-    </div>
-<?php
-endif;
-wp_reset_postdata();
+// Affichage de la galerie
+echo '<div id="photo-gallery" class="photo-gallery two-columns">';
+foreach ($gallery_images as $image) {
+    echo '<div class="gallery-item" data-category="' . strtolower($image['category']) . '" data-format="' . strtolower($image['format']) . '" data-year="' . $image['year'] . '">';
+    echo '<img src="' . esc_url(get_stylesheet_directory_uri() . '/images/' . $image['file']) . '" alt="' . esc_attr($image['title']) . '" width="100%">';
+    echo '<div class="image-details">';
+    echo '<h3>' . esc_html($image['title']) . '</h3>';
+    echo '<p>Référence: ' . esc_html($image['reference']) . '</p>';
+    echo '<p>Catégorie: ' . esc_html($image['category']) . '</p>';
+    echo '<p>Année: ' . esc_html($image['year']) . '</p>';
+    echo '<p>Format: ' . esc_html($image['format']) . '</p>';
+    echo '<p>Type: ' . esc_html($image['type']) . '</p>';
+    echo '</div>';
+    echo '</div>';
+}
+echo '</div>';
 
 get_footer(); // Inclut le pied de page de votre thème
 ?>

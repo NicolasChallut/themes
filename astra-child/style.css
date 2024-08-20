@@ -47,8 +47,108 @@ Updated: 2024-02-01 11:07:01
     max-width: 100%;
     height: auto; /* Assure que l'image est responsive */
 }
+#content{
+display: flex;
+justify-content: center;
+}
 
 .site-content .ast-container {
     display: flex;
     flex-direction: column;
+}
+
+.ast-container{
+margin:0;
+padding:0;
+width: 100%;
+}
+
+.filter-buttons {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-button {
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+    background-color: #005177;
+}
+
+/*popup css*/ 
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: none;
+}
+
+.popup-salon {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    height: 769px;
+    margin: 100px auto;
+    background: #fff;
+    padding: 20px 0 20px 0;
+    box-shadow: inset 0 0 0 5px black;
+}
+
+.popup-header {
+    position: relative;
+    text-align: center;
+}
+
+.popup-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.popup-content {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+form p{
+    color: #313144 !important;
+}
+form input{
+    Width:263px !important;
+    Height:40px !important;
+    border-radius: 8px !important; 
+}
+
+form textarea{
+    Width:263px !important;
+    Height:210px !important;
+    border-radius: 8px;
+    
+}
+
+.btn{
+    border-radius: 0 !important;
+    background-color: #D8D8D8 !important;
+    color: black !important;
+
 }

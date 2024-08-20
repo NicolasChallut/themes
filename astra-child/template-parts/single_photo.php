@@ -1,3 +1,9 @@
+<?php
+/*
+Template Name: single photo
+*/
+get_header(); // Inclut l'en-tête de votre thème
+?>
 <div class="column">
                 <div class="gallery-item">
                     <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>" width="100%">
@@ -11,3 +17,6 @@
                     </div>
                 </div>
             </div>
+<?php
+            get_footer(); // Inclut le pied de page de votre thème
+?>
