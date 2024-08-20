@@ -138,3 +138,34 @@ function add_ajax_url() {
     <?php
 }
 add_action('wp_head', 'add_ajax_url');
+
+// Obtenir l'URL de l'image précédente
+function get_previous_image_url($current_id) {
+    $prev_image = get_previous_post_thumbnail_id($current_id);
+    return wp_get_attachment_url($prev_image);
+}
+
+// Obtenir l'URL de l'image suivante
+function get_next_image_url($current_id) {
+    $next_image = get_next_post_thumbnail_id($current_id);
+    return wp_get_attachment_url($next_image);
+}
+
+// Obtenir l'ID de l'image précédente
+function get_previous_image_id($current_id) {
+    $prev_image = get_previous_post_thumbnail_id($current_id);
+    return $prev_image;
+}
+
+// Obtenir l'ID de l'image suivante
+function get_next_image_id($current_id) {
+    $next_image = get_next_post_thumbnail_id($current_id);
+    return $next_image;
+}
+
+// Obtenir l'URL de la miniature de l'image
+function get_thumbnail_url($image_id) {
+    $thumbnail = wp_get_attachment_image_src($image_id, 'thumbnail');
+    return $thumbnail[0];
+}
+

@@ -10,6 +10,9 @@ Version: 4.6.3.1706785621
 Updated: 2024-02-01 11:07:01
 
 */
+.site-header{
+    box-shadow: 0px 4px 14px 10px rgba(0, 0, 0, 0.03);
+}
 
 .photo-gallery {
     display: flex;
@@ -150,5 +153,183 @@ form textarea{
     border-radius: 0 !important;
     background-color: #D8D8D8 !important;
     color: black !important;
-
 }
+
+.info-photo {
+    list-style-type: none;
+}
+
+/* Main Content Styles */
+.main-content {
+    padding: 20px;
+}
+
+.section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+.section2{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    height: 118px;
+}
+
+.interest{
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.left-column {
+    flex: 1;
+    display: flex;
+    align-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.heading {
+    font-size: 66px;
+    font-style: italic;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.info-photo {
+    list-style: none;
+    padding: 0;
+    margin:0 0 35px 0;
+}
+
+.info-photo li {
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: #000;
+    margin: 20px 0;
+}
+
+.separator1{
+    border: 0;
+    height: 1px;
+    background: #000;
+    width: 50%;
+}
+
+.photo-interest {
+    text-align: left;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.btn_contact {
+    background-color: #d8d8d8;
+    color: black;
+    text-transform: uppercase;
+    border-radius: 0;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn_contact2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #d8d8d8;
+    color: black;
+    width: 272px;
+    height: 50px;
+    padding: 8px 15px;
+}
+
+.next {
+    margin-top: 10px;
+    width: 71px;
+    height: 81px; 
+    object-fit: cover;
+}
+
+.gallery {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.gallery-item img {
+    width: 590px;
+    height: 495px;
+    object-fit: cover;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.right-column {
+    width: 563px; 
+    height: 844px; 
+    object-fit: cover;
+}
+
+.right-column2 img{
+    height: 81px;
+    width: 71px;
+    position: relative;
+}
+
+
+.arrows {
+    position: absolute;
+    width: 71px;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    margin-top: 10px;
+}
+
+.arrow-left, .arrow-right {
+    text-decoration: none;
+    font-size: 24px;
+    color: #000;
+}
+
+.thumbnails {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.thumbnail {
+    width: 100px; /* Adjust as needed */
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.preview-prev {
+    position: absolute;
+    left: -120px; /* Adjust positioning */
+}
+
+.preview-next {
+    position: absolute;
+    right: -120px; /* Adjust positioning */
+}
+
+.arrow-left:hover + .thumbnails .preview-prev,
+.arrow-right:hover + .thumbnails .preview-next {
+    opacity: 1;
+}
+
