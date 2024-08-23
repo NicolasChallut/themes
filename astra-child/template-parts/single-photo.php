@@ -4,29 +4,17 @@ Template Name: Single Photo
 */
 get_header(); // Inclut l'en-tête de votre thème
 
-$image_id = 5938; // Remplacez 5944 par l'ID de l'image que vous souhaitez afficher
+// Récupérer l'ID de l'image depuis l'URL
+$image_id = isset($_GET['image_id']) ? intval($_GET['image_id']) : 0;
 
-// Récupérer la catégorie de l'image principale
+if (!$image_id) {
+    echo 'Aucune image spécifiée.';
+    get_footer();
+    exit;
+}
+
+// Récupérer les informations de l'image principale
 $categorie = get_field('categorie', $image_id);
-
-// Requête personnalisée pour récupérer les images de la même catégorie
-$args = array(
-    'post_type' => 'attachment',
-    'post_mime_type' => 'image',
-    'post_status' => 'inherit',
-    'posts_per_page' => 2, // Nombre d'images à afficher
-    'meta_query' => array(
-        array(
-            'key' => 'categorie', // Nom du champ ACF
-            'value' => $categorie,
-            'compare' => '=', // Comparaison pour matcher exactement la catégorie
-        ),
-    ),
-    'post__not_in' => array($image_id) // Exclure l'image principale
-);
-
-$query = new WP_Query($args);
-
 ?>
 
 <body>
@@ -57,34 +45,71 @@ $query = new WP_Query($args);
         <!-- Section 2 -->
         <div class="section2">
             <div class="interest">
-                <p class="photo-interest">cette photo vous intéresse ?</p>
+                <p class="photo-interest">Cette photo vous intéresse ?</p>
                 <div class="buttons">
-                    <a href="#" class="btn_contact2">contact</a>
+                    <a href="#" id="contact-link" class="btn_contact2">Contact</a>
                 </div>
             </div>
             <div class="right-column2">
-                <img src="<?php echo esc_url(wp_get_attachment_url($image_id)); ?>" alt="">
+                <img src="<?php echo esc_url(wp_get_attachment_url($image_id)); ?>">
                 <!-- Container for arrows -->
                 <div class="arrows">
-                    <div class="arrow-left">&#8592;</div> <!-- Left arrow -->
-                    <div class="arrow-right">&#8594;</div> <!-- Right arrow -->
+                    <?php if ($prev_image_id): ?>
+                        <a href="<?php echo esc_url(get_permalink(get_page_by_path('single-photo')) . '?image_id=' . $prev_image_id); ?>" class="arrow-left" title="Précédent">&#8592;</a>
+                    <?php endif; ?>
+                    <?php if ($next_image_id): ?>
+                        <a href="<?php echo esc_url(get_permalink(get_page_by_path('single-photo')) . '?image_id=' . $next_image_id); ?>" class="arrow-right" title="Suivant">&#8594;</a>
+                    <?php endif; ?>
+                </div>
+                
+                <!-- Container for thumbnail previews -->
+                <div class="thumbnails">
+                    <?php if ($prev_image_id): ?>
+                        <div class="thumbnail preview-prev">
+                            <img src="<?php echo esc_url(wp_get_attachment_url($prev_image_id)); ?>" alt="Image précédente">
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($next_image_id): ?>
+                        <div class="thumbnail preview-next">
+                            <img src="<?php echo esc_url(wp_get_attachment_url($next_image_id)); ?>" alt="Image suivante">
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
 
-        <!-- Separator -->
         <hr class="separator">
 
         <!-- Section 3 -->
-        <p class="uppercase">vous aimerez aussi</p>
+        <p class="uppercase">Vous aimerez aussi</p>
         <div class="gallery">
             <?php
+            // Requête personnalisée pour récupérer les images de la même catégorie
+            $args = array(
+                'post_type' => 'attachment',
+                'post_mime_type' => 'image',
+                'post_status' => 'inherit',
+                'posts_per_page' => 2,
+                'meta_query' => array(
+                    array(
+                        'key' => 'categorie',
+                        'value' => $categorie,
+                        'compare' => '=',
+                    ),
+                ),
+                'post__not_in' => array($image_id),
+            );
+
+            $query = new WP_Query($args);
+
             if ($query->have_posts()) :
                 while ($query->have_posts()) : $query->the_post();
                     $image_url = wp_get_attachment_url(get_the_ID());
                     ?>
                     <div class="gallery-item">
-                        <img src="<?php echo esc_url($image_url); ?>" alt="">
+                        <a href="<?php echo esc_url(get_permalink(get_page_by_path('single-photo')) . '?image_id=' . get_the_ID()); ?>">
+                            <img src="<?php echo esc_url($image_url); ?>" alt="">
+                        </a>
                     </div>
                     <?php
                 endwhile;
@@ -92,13 +117,11 @@ $query = new WP_Query($args);
                 echo '<p>Aucune image trouvée dans cette catégorie.</p>';
             endif;
 
-            // Réinitialiser les données du post global
             wp_reset_postdata();
             ?>
         </div>
     </div>
 
-    
 </body>
 </html>
 

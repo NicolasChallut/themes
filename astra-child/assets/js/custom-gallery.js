@@ -1,32 +1,41 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const categoryFilter = document.getElementById('filter-category');
-    const yearFilter = document.getElementById('filter-year');
-    const typeFilter = document.getElementById('filter-type');
-    const tableRows = document.querySelectorAll('#photo-table tbody tr');
+jQuery(document).ready(function($) {
+    $('#filter-form').on('change', function() {
+        var selectedCategory = $('#filter-category').val().toLowerCase();
+        var selectedFormat = $('#filter-format').val().toLowerCase();
+        var selectedOrder = $('#filter-order').val(); // Récupère l'ordre choisi (asc/desc)
 
-    function filterPhotos() {
-        const category = categoryFilter.value;
-        const year = yearFilter.value;
-        const type = typeFilter.value;
+        // Récupérer les éléments de la galerie
+        var galleryItems = $('.gallery-item');
 
-        tableRows.forEach(row => {
-            const rowCategory = row.getAttribute('data-category');
-            const rowYear = row.getAttribute('data-year');
-            const rowType = row.getAttribute('data-type');
+        // Filtrer les éléments de la galerie
+        galleryItems.each(function() {
+            var itemCategory = $(this).data('category');
+            var itemFormat = $(this).data('format');
+            var itemYear = $(this).data('year');
 
-            const categoryMatch = (category === 'all' || rowCategory === category);
-            const yearMatch = (year === 'all' || rowYear === year);
-            const typeMatch = (type === 'all' || rowType === type);
-
-            if (categoryMatch && yearMatch && typeMatch) {
-                row.style.display = '';
+            if ((selectedCategory === '' || itemCategory === selectedCategory) &&
+                (selectedFormat === '' || itemFormat === selectedFormat)) {
+                $(this).show();
             } else {
-                row.style.display = 'none';
+                $(this).hide();
             }
         });
-    }
 
-    categoryFilter.addEventListener('change', filterPhotos);
-    yearFilter.addEventListener('change', filterPhotos);
-    typeFilter.addEventListener('change', filterPhotos);
+        // Trier les éléments de la galerie selon l'année
+        if (selectedOrder) {
+            galleryItems.sort(function(a, b) {
+                var yearA = parseInt($(a).data('year'));
+                var yearB = parseInt($(b).data('year'));
+
+                if (selectedOrder === 'asc') {
+                    return yearA - yearB;
+                } else if (selectedOrder === 'desc') {
+                    return yearB - yearA;
+                }
+            });
+
+            // Réorganiser les éléments dans le conteneur
+            $('#photo-gallery').html(galleryItems);
+        }
+    });
 });

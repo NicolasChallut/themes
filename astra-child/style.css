@@ -16,9 +16,11 @@ Updated: 2024-02-01 11:07:01
 
 .photo-gallery {
     display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px; /* Espacement de 10px entre les cards */
-    justify-content: center; /* Centrer les colonnes dans leur conteneur */
+    width: 1200px;
 }
 
 .photo-card {
@@ -42,47 +44,31 @@ Updated: 2024-02-01 11:07:01
 }
 
 .header-image {
-    text-align: center; /* Centre l'image */
-    margin-bottom: 20px; /* Ajoute un espace en dessous de l'image */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: max-content;
+    height: 966px;
 }
 
 .header-image img {
     max-width: 100%;
     height: auto; /* Assure que l'image est responsive */
 }
-#content{
-display: flex;
-justify-content: center;
-}
+
 
 .site-content .ast-container {
     display: flex;
     flex-direction: column;
+    max-width: 100%;
 }
 
 .ast-container{
 margin:0;
 padding:0;
 width: 100%;
-}
-
-.filter-buttons {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.filter-button {
-    background-color: #0073aa;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.filter-button:hover {
-    background-color: #005177;
 }
 
 /*popup css*/ 
@@ -158,12 +144,94 @@ form textarea{
 .info-photo {
     list-style-type: none;
 }
-
-/* Main Content Styles */
-.main-content {
-    padding: 20px;
+/* form filter */
+#filter-form{
+    display:flex;
+    width: 1200px;
+    justify-content: space-between;
 }
 
+.filter-left{
+    display: flex;
+    justify-content: space-between;
+    width: 580px;
+}
+
+#filter-form select{
+    border-radius: 8px;
+    border: 1.3px solid var(--Blues-Gray2, #B8BBC2);
+    width: 260px;
+    margin:80px 0 40px 0;
+}
+
+
+.filter-controls select {
+    margin-right: 10px; /* Ajoute un espace entre chaque menu déroulant */
+    padding: 5px; /* Ajoute du padding pour un meilleur aspect visuel */
+}
+/*lightbox*/
+
+.gallery-item {
+    position: relative;
+    width: calc(50% - 20px); /* Ajustez en fonction de votre mise en page */
+    margin-bottom: 20px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Couleur d'arrière-plan semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .overlay {
+    opacity: 1;
+}
+
+.icon {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px; /* Espacement entre les icônes */
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.icon:hover {
+    transform: scale(1.2); /* Agrandir légèrement au survol */
+}
+
+
+/* header images*/
+.background_logo{
+    position: absolute;
+    width: 1000px; 
+    height: 142px; 
+    z-index: 10;
+}
+/* Main Content Styles */
+.main-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+/*single-photo*/
 .section {
     display: flex;
     justify-content: space-between;
@@ -264,6 +332,9 @@ form textarea{
 .gallery {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
     gap: 20px;
 }
 
@@ -283,7 +354,7 @@ form textarea{
     object-fit: cover;
 }
 
-.right-column2 img{
+.right-column2 {
     height: 81px;
     width: 71px;
     position: relative;
@@ -295,7 +366,6 @@ form textarea{
     width: 71px;
     display: flex;
     justify-content: space-between;
-    transform: translateY(-50%);
     margin-top: 10px;
 }
 
@@ -309,6 +379,8 @@ form textarea{
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
+    height: 71px;
+    width: 81px;
 }
 
 .thumbnail {
@@ -333,3 +405,7 @@ form textarea{
     opacity: 1;
 }
 
+/*footer*/
+#astra-footer-menu{
+    gap: 86px;
+}
