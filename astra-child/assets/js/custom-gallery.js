@@ -9,9 +9,9 @@ jQuery(document).ready(function($) {
 
         // Filtrer les éléments de la galerie
         galleryItems.each(function() {
-            var itemCategory = $(this).data('category');
-            var itemFormat = $(this).data('format');
-            var itemYear = $(this).data('year');
+            var itemCategory = $(this).data('categorie_acf'); // Correction: utiliser 'category' au lieu de 'categorie_acf'
+            var itemFormat = $(this).data('format');     // Utilisation correcte de 'format'
+            var itemYear = $(this).data('year');         // Utilisation correcte de 'year'
 
             if ((selectedCategory === '' || itemCategory === selectedCategory) &&
                 (selectedFormat === '' || itemFormat === selectedFormat)) {

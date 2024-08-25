@@ -295,6 +295,7 @@ function astra_builder_footer_configuration( $configurations = array() ) {
 			'name'     => ASTRA_THEME_SETTINGS . '[footer-builder-pro-items]',
 			'type'     => 'control',
 			'control'  => 'ast-upgrade',
+			'campaign' => 'footer-builder',
 			'renderAs' => 'list',
 			'choices'  => array(
 				'two'   => array(
@@ -322,7 +323,7 @@ function astra_builder_footer_configuration( $configurations = array() ) {
 		);
 	}
 
-	$_configs = array_merge( $_configs, Astra_Builder_Base_Configuration::prepare_advanced_tab( 'section-footer-builder-layout' ) );
+	$_configs = array_merge( $_configs, Astra_Extended_Base_Configuration::prepare_advanced_tab( 'section-footer-builder-layout' ) );
 
 	$_configs = array_merge( $_configs, $configurations );
 

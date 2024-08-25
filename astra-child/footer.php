@@ -34,4 +34,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <?php get_template_part('template-parts/popup-contact'); ?>
 
-	</body>
+</body>

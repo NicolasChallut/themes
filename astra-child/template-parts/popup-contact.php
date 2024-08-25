@@ -13,8 +13,6 @@
                 echo 'Image non trouvée';
             }
             ?>
-            <!-- Bouton de fermeture -->
-            <span class="popup-close"><i class="fa fa-times"></i></span>
         </div>
         <div class="popup-content">
             <!-- Formulaire de contact -->

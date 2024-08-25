@@ -44,6 +44,7 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 						'name'     => ASTRA_THEME_SETTINGS . '[ast-blog-pro-items]',
 						'type'     => 'control',
 						'control'  => 'ast-upgrade',
+						'campaign' => 'blog-archive',
 						'renderAs' => 'list',
 						'choices'  => array(
 							'one'    => array(
@@ -76,9 +77,6 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 							'nine'   => array(
 								'title' => __( 'Archive excerpt options', 'astra' ),
 							),
-							'ten'    => array(
-								'title' => __( 'Extended spacing options', 'astra' ),
-							),
 						),
 						'section'  => 'section-blog',
 						'default'  => '',
@@ -102,29 +100,33 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 						'section'           => 'section-blog',
 						'type'              => 'control',
 						'transport'         => 'postMessage',
-						'title'             => __( 'Post Title Font Size', 'astra' ),
+						'title'             => __( 'Post Title Size', 'astra' ),
 						'priority'          => 140,
 						'default'           => astra_get_option( 'font-size-page-title' ),
-						'suffix'            => array( 'px', 'em', 'vw' ),
+						'suffix'            => array( 'px', 'em', 'vw', 'rem' ),
 						'input_attrs'       => array(
-							'px' => array(
+							'px'  => array(
 								'min'  => 0,
 								'step' => 1,
 								'max'  => 200,
 							),
-							'em' => array(
+							'em'  => array(
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
 							),
-							'vw' => array(
+							'vw'  => array(
 								'min'  => 0,
 								'step' => 0.1,
 								'max'  => 25,
 							),
+							'rem' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 20,
+							),
 						),
-						'context'           => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
-							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+						'context'           => Astra_Builder_Helper::$design_tab,
 						'divider'           => array( 'ast_class' => 'ast-top-section-divider' ),
 					),
 					array(
@@ -137,26 +139,30 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 						'title'             => __( 'Meta Font Size', 'astra' ),
 						'priority'          => 140,
 						'default'           => astra_get_option( 'font-size-post-meta' ),
-						'suffix'            => array( 'px', 'em', 'vw' ),
+						'suffix'            => array( 'px', 'em', 'vw', 'rem' ),
 						'input_attrs'       => array(
-							'px' => array(
+							'px'  => array(
 								'min'  => 0,
 								'step' => 1,
 								'max'  => 200,
 							),
-							'em' => array(
+							'em'  => array(
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
 							),
-							'vw' => array(
+							'vw'  => array(
 								'min'  => 0,
 								'step' => 0.1,
 								'max'  => 25,
 							),
+							'rem' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 20,
+							),
 						),
-						'context'           => ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ?
-							Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab,
+						'context'           => Astra_Builder_Helper::$design_tab,
 						'divider'           => array( 'ast_class' => 'ast-section-spacing' ),
 					),
 					array(
@@ -166,25 +172,30 @@ if ( ! class_exists( 'Astra_Archive_Typo_Configs' ) ) {
 						'section'           => 'section-blog',
 						'type'              => 'control',
 						'transport'         => 'postMessage',
-						'title'             => __( 'Taxonomy Font Size', 'astra' ),
+						'title'             => __( 'Taxonomy Font', 'astra' ),
 						'priority'          => 140,
 						'default'           => astra_get_option( 'font-size-post-tax' ),
-						'suffix'            => array( 'px', 'em', 'vw' ),
+						'suffix'            => array( 'px', 'em', 'vw', 'rem' ),
 						'input_attrs'       => array(
-							'px' => array(
+							'px'  => array(
 								'min'  => 0,
 								'step' => 1,
 								'max'  => 200,
 							),
-							'em' => array(
+							'em'  => array(
 								'min'  => 0,
 								'step' => 0.01,
 								'max'  => 20,
 							),
-							'vw' => array(
+							'vw'  => array(
 								'min'  => 0,
 								'step' => 0.1,
 								'max'  => 25,
+							),
+							'rem' => array(
+								'min'  => 0,
+								'step' => 0.1,
+								'max'  => 20,
 							),
 						),
 						'context'           => array(

@@ -253,10 +253,16 @@ form textarea{
 }
 
 .left-column {
-    flex: 1;
     display: flex;
     align-content: flex-end;
+    flex-direction: column;
     flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.gallery_singlephoto{
+    display: flex;
+    gap: 20px;
 }
 
 .heading {
@@ -354,7 +360,7 @@ form textarea{
     object-fit: cover;
 }
 
-.right-column2 {
+.right-column2 img{
     height: 81px;
     width: 71px;
     position: relative;

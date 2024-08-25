@@ -15,6 +15,48 @@ if (!$image_id) {
 
 // Récupérer les informations de l'image principale
 $categorie = get_field('categorie', $image_id);
+$reference = get_field('reference', $image_id); // Assurez-vous que cela retourne une valeur valide
+
+// Définir les variables pour les images précédentes et suivantes
+$prev_image_id = null;
+$next_image_id = null;
+
+// Obtenir les ID des images précédentes et suivantes
+$args = array(
+    'post_type' => 'attachment',
+    'post_mime_type' => 'image',
+    'post_status' => 'inherit',
+    'posts_per_page' => -1,
+    'meta_query' => array(
+        array(
+            'key' => 'categorie',
+            'value' => $categorie,
+            'compare' => '=',
+        ),
+    ),
+    'post__not_in' => array($image_id),
+    'orderby' => 'menu_order',
+    'order' => 'ASC'
+);
+
+$query = new WP_Query($args);
+
+$images = $query->posts;
+
+if ($images) {
+    // Trouver les indices de l'image actuelle
+    $current_index = array_search($image_id, array_column($images, 'ID'));
+
+    // Définir l'image précédente et suivante
+    if ($current_index > 0) {
+        $prev_image_id = $images[$current_index - 1]->ID;
+    }
+    if ($current_index < count($images) - 1) {
+        $next_image_id = $images[$current_index + 1]->ID;
+    }
+}
+
+wp_reset_postdata();
 ?>
 
 <body>
@@ -27,7 +69,7 @@ $categorie = get_field('categorie', $image_id);
                     <?php echo esc_html(get_the_title($image_id)); ?>
                 </h2>
                 <ul class="info-photo">
-                    <li>référence: <?php echo esc_html(get_field('reference', $image_id)); ?></li>
+                    <li>référence: <?php echo esc_html($reference); ?></li>
                     <li>catégorie: <?php echo esc_html($categorie); ?></li>
                     <li>format: <?php echo esc_html(get_field('format', $image_id)); ?></li>
                     <li>type: <?php echo esc_html(get_field('type', $image_id)); ?></li>
@@ -46,8 +88,8 @@ $categorie = get_field('categorie', $image_id);
         <div class="section2">
             <div class="interest">
                 <p class="photo-interest">Cette photo vous intéresse ?</p>
-                <div class="buttons">
-                    <a href="#" id="contact-link" class="btn_contact2">Contact</a>
+                <div class="contact-link">
+                    <a href="#" class="btn_contact2">Contact</a>
                 </div>
             </div>
             <div class="right-column2">
@@ -82,7 +124,7 @@ $categorie = get_field('categorie', $image_id);
 
         <!-- Section 3 -->
         <p class="uppercase">Vous aimerez aussi</p>
-        <div class="gallery">
+        <div class="gallery_singlephoto">
             <?php
             // Requête personnalisée pour récupérer les images de la même catégorie
             $args = array(
@@ -122,6 +164,51 @@ $categorie = get_field('categorie', $image_id);
         </div>
     </div>
 
+    <!-- Script JavaScript inclus dans le template PHP -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer la référence de la photo depuis PHP
+            var photoReference = <?php echo json_encode($reference); ?>;
+
+            // Vérifiez que la variable est correctement définie
+            console.log("Référence de la photo:", photoReference);
+
+            var contactLinks = document.querySelectorAll('.contact-link');
+            var popup = document.querySelector('.popup-overlay');
+            var closeBtn = document.querySelector('.popup-close');
+            var photoRefInput = document.querySelector('#photo-ref');
+
+            function openPopup() {
+                if (photoRefInput) {
+                    photoRefInput.value = photoReference;
+                }
+                popup.style.display = 'block';
+            }
+
+            function closePopup() {
+                popup.style.display = 'none';
+            }
+
+            contactLinks.forEach(function(contactLink) {
+                contactLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    openPopup();
+                });
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    closePopup();
+                });
+            }
+
+            window.addEventListener('click', function(event) {
+                if (event.target === popup) {
+                    closePopup();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 

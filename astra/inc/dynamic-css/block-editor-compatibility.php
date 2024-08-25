@@ -346,6 +346,10 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 	.wp-block-latest-posts > li > *:first-child, .wp-block-latest-posts:not(.is-grid) > li:first-child {
 		margin-top: 0;
 	}
+	.entry-content .wp-block-buttons,
+	.entry-content .wp-block-uagb-buttons {
+		margin-bottom: 1.5em;
+	}
 	';
 
 	if ( $astra_block_editor_v2_ui ) {
@@ -361,6 +365,8 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 
 		$alignwide_1200_left_negative_margin  = $astra_continer_left_spacing ? 'calc(-1 * min(' . $astra_continer_left_spacing . ', 20px))' : '-20px';
 		$alignwide_1200_right_negative_margin = $astra_continer_right_spacing ? 'calc(-1 * min(' . $astra_continer_right_spacing . ', 20px))' : '-20px';
+
+		$heading_width_comp = Astra_Dynamic_CSS::astra_4_8_0_compatibility() ? 'none' : 'var(--wp--custom--ast-content-width-size)';
 
 		$dynamic_css .= '
 			.wp-block-search__inside-wrapper .wp-block-search__input {
@@ -390,7 +396,7 @@ function astra_load_modern_block_editor_ui( $dynamic_css ) {
 				max-width: var(--wp--custom--ast-wide-width-size);
 			}
 			.ast-page-builder-template .entry-content[ast-blocks-layout] > .inherit-container-width > *, .ast-page-builder-template .entry-content[ast-blocks-layout] > * > *, .entry-content[ast-blocks-layout] > .wp-block-cover .wp-block-cover__inner-container {
-				max-width: var(--wp--custom--ast-content-width-size);
+				max-width: ' . $heading_width_comp . ' ;
 				margin-left: auto;
 				margin-right: auto;
 			}

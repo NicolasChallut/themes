@@ -31,7 +31,7 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 		public function register_configuration( $configurations, $wp_customize ) {
 
 			/** @psalm-suppress DocblockTypeContradiction */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
-			$tab_config = ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) ? Astra_Builder_Helper::$design_tab : Astra_Builder_Helper::$general_tab;
+			$tab_config = Astra_Builder_Helper::$design_tab;
 
 			$_configs = array(
 
@@ -147,15 +147,15 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 					'control'           => 'ast-responsive-spacing',
 					'sanitize_callback' => array( 'Astra_Customizer_Sanitizes', 'sanitize_responsive_spacing' ),
 					'section'           => 'section-blog-single',
-					'title'             => __( 'Inside', 'astra-addon' ),
+					'title'             => __( 'Inside', 'astra' ),
 					'linked_choices'    => true,
 					'transport'         => 'refresh',
 					'unit_choices'      => array( 'px', 'em', '%' ),
 					'choices'           => array(
-						'top'    => __( 'Top', 'astra-addon' ),
-						'right'  => __( 'Right', 'astra-addon' ),
-						'bottom' => __( 'Bottom', 'astra-addon' ),
-						'left'   => __( 'Left', 'astra-addon' ),
+						'top'    => __( 'Top', 'astra' ),
+						'right'  => __( 'Right', 'astra' ),
+						'bottom' => __( 'Bottom', 'astra' ),
+						'left'   => __( 'Left', 'astra' ),
 					),
 					'priority'          => 30,
 					'divider'           => array( 'ast_class' => 'ast-top-dotted-divider' ),
@@ -163,16 +163,14 @@ if ( ! class_exists( 'Astra_Blog_Single_Layout_Configs' ) ) {
 				),
 			);
 
-			if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
-				$_configs[] = array(
-					'name'        => 'section-blog-single-ast-context-tabs',
-					'section'     => 'section-blog-single',
-					'type'        => 'control',
-					'control'     => 'ast-builder-header-control',
-					'priority'    => 0,
-					'description' => '',
-				);
-			}
+			$_configs[] = array(
+				'name'        => 'section-blog-single-ast-context-tabs',
+				'section'     => 'section-blog-single',
+				'type'        => 'control',
+				'control'     => 'ast-builder-header-control',
+				'priority'    => 0,
+				'description' => '',
+			);
 
 			$configurations = array_merge( $configurations, $_configs );
 

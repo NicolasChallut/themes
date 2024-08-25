@@ -75,6 +75,7 @@ function astra_related_posts_css( $dynamic_css ) {
 		$custom_scale_height   = astra_get_option( 'related-posts-image-custom-scale-height', 9 );
 		$aspect_ratio          = astra_get_dynamic_image_aspect_ratio( $aspect_ratio_type, $predefined_scale, $custom_scale_width, $custom_scale_height );
 		$with_aspect_img_width = 'predefined' === $aspect_ratio_type || 'custom' === $aspect_ratio_type ? '100%' : '';
+		$object_fit            = 'custom' === $aspect_ratio_type ? 'cover' : '';
 
 		$css_desktop_output = array(
 			'.ast-single-related-posts-container .ast-related-posts-wrapper' => array(
@@ -127,6 +128,7 @@ function astra_related_posts_css( $dynamic_css ) {
 			'.ast-related-post-content .post-thumb-img-content img' => array(
 				'aspect-ratio' => $aspect_ratio,
 				'width'        => $with_aspect_img_width,
+				'object-fit'   => $object_fit, // setting it to 'cover' for custom ratio option same as blogs archive page.
 			),
 			'.ast-related-post-content .ast-author-avatar' => array(
 				'--ast-author-avatar-size' => astra_get_css_value( $author_avatar_size, 'px' ),
@@ -258,9 +260,7 @@ function astra_related_posts_css( $dynamic_css ) {
 
 		$dynamic_css .= astra_parse_css( $css_max_mobile_output, '', astra_get_mobile_breakpoint() );
 
-		if ( Astra_Builder_Helper::$is_header_footer_builder_active ) {
-			$dynamic_css .= Astra_Builder_Base_Dynamic_CSS::prepare_inner_section_advanced_css( 'ast-sub-section-related-posts', '.site .ast-single-related-posts-container' );
-		}
+		$dynamic_css .= Astra_Extended_Base_Dynamic_CSS::prepare_inner_section_advanced_css( 'ast-sub-section-related-posts', '.site .ast-single-related-posts-container' );
 
 		return $dynamic_css;
 	}

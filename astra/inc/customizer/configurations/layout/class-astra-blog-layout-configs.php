@@ -282,7 +282,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 						),
 						'read-more'  => array(
 							'clone'       => false,
-							'is_parent'   => defined( 'ASTRA_EXT_VER' ) ? true : false,
+							'is_parent'   => $if_astra_addon ? true : false,
 							'main_index'  => 'read-more',
 							'clone_limit' => 1,
 							'title'       => __( 'Read More', 'astra' ),
@@ -436,7 +436,7 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 					'section'  => 'section-blog',
 					'priority' => 14,
 					'label'    => '',
-					'help'     => sprintf( /* translators: 1: link open markup, 2: link close markup */ __( 'Calculate a personalized image ratio using this %1$s online tool %2$s for your image dimensions.', 'astra' ), '<a href="https://www.digitalrebellion.com/webapps/aspectcalc" target="_blank">', '</a>' ),
+					'help'     => sprintf( /* translators: 1: link open markup, 2: link close markup */ __( 'Calculate a personalized image ratio using this %1$s online tool %2$s for your image dimensions.', 'astra' ), '<a href="' . esc_url( 'https://www.digitalrebellion.com/webapps/aspectcalc' ) . '" target="_blank">', '</a>' ), 
 				),
 
 				/**
@@ -487,11 +487,18 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 				array(
 					'name'     => ASTRA_THEME_SETTINGS . '[blog-post-color-divider]',
 					'section'  => 'section-blog',
-					'title'    => __( 'Post Cards', 'astra-addon' ),
+					'title'    => __( 'Post Cards', 'astra' ),
 					'type'     => 'control',
 					'control'  => 'ast-heading',
 					'priority' => 1,
-					'context'  => Astra_Builder_Helper::$design_tab,
+					'context'  => array(
+						Astra_Builder_Helper::$design_tab_config,
+						array(
+							'setting'  => ASTRA_THEME_SETTINGS . '[blog-layout]',
+							'operator' => '===',
+							'value'    => 'blog-layout-6',
+						),
+					),
 				),
 
 				array(
@@ -657,16 +664,15 @@ if ( ! class_exists( 'Astra_Blog_Layout_Configs' ) ) {
 				),
 			);
 
-			if ( true === Astra_Builder_Helper::$is_header_footer_builder_active ) {
-				$_configs[] = array(
-					'name'        => 'section-blog-ast-context-tabs',
-					'section'     => 'section-blog',
-					'type'        => 'control',
-					'control'     => 'ast-builder-header-control',
-					'priority'    => 0,
-					'description' => '',
-				);
-			}
+			$_configs[] = array(
+				'name'        => 'section-blog-ast-context-tabs',
+				'section'     => 'section-blog',
+				'type'        => 'control',
+				'control'     => 'ast-builder-header-control',
+				'priority'    => 0,
+				'description' => '',
+			);
+
 			/** @psalm-suppress UndefinedClass */ // phpcs:ignore Generic.Commenting.DocComment.MissingShort
 			if ( ! defined( 'ASTRA_EXT_VER' ) || ( defined( 'ASTRA_EXT_VER' ) && ! Astra_Ext_Extension::is_active( 'blog-pro' ) ) ) {
 
