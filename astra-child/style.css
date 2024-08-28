@@ -201,12 +201,47 @@ form textarea{
     opacity: 1;
 }
 
-.icon {
-    color: white;
+.photo-title{
+    
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        color: #fff;
+        padding: 5px;
+        font-size: 14px;
+        z-index: 1000;
+    
+}
+
+.photo-category {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #fff;
+    padding: 5px;
+    font-size: 14px;
+    z-index: 1000;
+}
+
+/* Icone plein écran en haut à gauche */
+.fullscreen-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
     font-size: 24px;
-    margin: 0 10px; /* Espacement entre les icônes */
-    text-decoration: none;
-    transition: transform 0.3s ease;
+    z-index: 1000; /* Assurez-vous que cette icône est au-dessus des autres éléments */
+}
+
+/* Icone d'information au centre */
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 24px;
+    z-index: 1000;
 }
 
 .icon:hover {

@@ -14,14 +14,20 @@ if (!$image_id) {
 }
 
 // Récupérer les informations de l'image principale
-$categorie = get_field('categorie', $image_id);
-$reference = get_field('reference', $image_id); // Assurez-vous que cela retourne une valeur valide
+                    $image_reference=get_field('reference',$image_id);
+                    $image_url = wp_get_attachment_url($image_id);
+                    $image_title = get_the_title($image_id);
+                    $image_category = get_field('category', $image_id);
+                    $image_year = get_field('annee', $image_id);
+                    $image_format = get_field('format', $image_id);
+                    $image_id_from_url = attachment_url_to_postid($image_url);
+                    $single_photo_page_url = get_permalink(get_page_by_path('single-photo')) . '?image_id=' . $image_id;
 
 // Définir les variables pour les images précédentes et suivantes
 $prev_image_id = null;
 $next_image_id = null;
 
-// Obtenir les ID des images précédentes et suivantes
+// Obtenir les ID des images de la même catégorie, y compris l'image actuelle
 $args = array(
     'post_type' => 'attachment',
     'post_mime_type' => 'image',
@@ -30,11 +36,10 @@ $args = array(
     'meta_query' => array(
         array(
             'key' => 'categorie',
-            'value' => $categorie,
+            'value' => $image_category,
             'compare' => '=',
         ),
     ),
-    'post__not_in' => array($image_id),
     'orderby' => 'menu_order',
     'order' => 'ASC'
 );
@@ -45,14 +50,15 @@ $images = $query->posts;
 
 if ($images) {
     // Trouver les indices de l'image actuelle
-    $current_index = array_search($image_id, array_column($images, 'ID'));
+    $image_ids = wp_list_pluck($images, 'ID');
+    $current_index = array_search($image_id, $image_ids);
 
     // Définir l'image précédente et suivante
     if ($current_index > 0) {
-        $prev_image_id = $images[$current_index - 1]->ID;
+        $prev_image_id = $image_ids[$current_index - 1];
     }
-    if ($current_index < count($images) - 1) {
-        $next_image_id = $images[$current_index + 1]->ID;
+    if ($current_index < count($image_ids) - 1) {
+        $next_image_id = $image_ids[$current_index + 1];
     }
 }
 
@@ -69,11 +75,11 @@ wp_reset_postdata();
                     <?php echo esc_html(get_the_title($image_id)); ?>
                 </h2>
                 <ul class="info-photo">
-                    <li>référence: <?php echo esc_html($reference); ?></li>
-                    <li>catégorie: <?php echo esc_html($categorie); ?></li>
-                    <li>format: <?php echo esc_html(get_field('format', $image_id)); ?></li>
+                    <li>référence: <?php echo esc_html($image_reference); ?></li>
+                    <li>catégorie: <?php echo esc_html($image_category); ?></li>
+                    <li>format: <?php echo esc_html($image_format); ?></li>
                     <li>type: <?php echo esc_html(get_field('type', $image_id)); ?></li>
-                    <li>année: <?php echo esc_html(get_field('annee', $image_id)); ?></li>
+                    <li>année: <?php echo esc_html($image_year); ?></li>
                 </ul>
             </div>
 
@@ -134,8 +140,8 @@ wp_reset_postdata();
                 'posts_per_page' => 2,
                 'meta_query' => array(
                     array(
-                        'key' => 'categorie',
-                        'value' => $categorie,
+                        'key' => 'category',
+                        'value' => $image_category,
                         'compare' => '=',
                     ),
                 ),
@@ -148,11 +154,35 @@ wp_reset_postdata();
                 while ($query->have_posts()) : $query->the_post();
                     $image_url = wp_get_attachment_url(get_the_ID());
                     ?>
-                    <div class="gallery-item">
-                        <a href="<?php echo esc_url(get_permalink(get_page_by_path('single-photo')) . '?image_id=' . get_the_ID()); ?>">
-                            <img src="<?php echo esc_url($image_url); ?>" alt="">
-                        </a>
-                    </div>
+                         <div class="gallery-item" data-category="<?php echo esc_attr($image_category); ?>" data-format="<?php echo esc_attr($image_format); ?>" data-year="<?php echo esc_attr($image_year); ?>">
+    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>" width="100%">
+    <div class="overlay">
+        <!-- Icone plein écran en haut à gauche -->
+        <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" data-lightbox="gallery" title="Voir en plein écran">
+            <i class="fa fa-expand"></i>
+        </a>
+        <!-- Obtenir l'ID de l'image en utilisant l'URL -->
+        <?php 
+            // Obtenir l'ID de l'image en utilisant son URL
+            $image_id_from_url = attachment_url_to_postid($image_url);
+            // Construire l'URL de la page dynamique en utilisant cet ID
+            $dynamic_single_photo_page_url = $image_id_from_url ? get_permalink(get_page_by_path('single-photo')) . '?image_id=' . $image_id_from_url : '';
+            // Utiliser cet ID pour obtenir le titre de l'image
+            $overlay_image_title = $image_id_from_url ? get_the_title($image_id_from_url) : '';
+        ?>
+        <!-- Icone d'information au centre -->
+        <a href="<?php echo esc_url($dynamic_single_photo_page_url); ?>" class="icon eye-icon" title="Voir les informations">
+            <i class="fa fa-eye"></i>
+        </a>
+        <!-- Référence en bas à gauche -->
+        <div class="photo-title"><?php echo esc_html($overlay_image_title); ?></div>
+        <!-- Catégorie en bas à droite -->
+        <div class="photo-category"><?php echo esc_html($image_category); ?></div>
+    </div>
+</div>
+
+
+
                     <?php
                 endwhile;
             else :
@@ -168,7 +198,7 @@ wp_reset_postdata();
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
             // Récupérer la référence de la photo depuis PHP
-            var photoReference = <?php echo json_encode($reference); ?>;
+            var photoReference = <?php echo json_encode($image_reference); ?>;
 
             // Vérifiez que la variable est correctement définie
             console.log("Référence de la photo:", photoReference);

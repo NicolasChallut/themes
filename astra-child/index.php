@@ -1,4 +1,7 @@
 <?php
+/*
+Template Name: Home
+*/
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 get_header(); // Inclut l'en-tête de votre thème
@@ -28,7 +31,7 @@ if ($query->have_posts()) {
     $images = $query->posts;
     $random_image = $images[array_rand($images)];
     $header_image_url = wp_get_attachment_url($random_image->ID);
-    $overlay_image_url = wp_get_attachment_url(6039);
+    $overlay_image_url = wp_get_attachment_url(31);
 }
 ?>
 
@@ -47,49 +50,73 @@ if ($query->have_posts()) {
 <div class="main-content">
     <div class="filter-controls">
         <form id="filter-form">
-            <div class="filter-left">
-                <?php
-                // Fonction pour générer des options de filtre
-                function generate_filter_options($meta_key) {
-                    $posts = get_posts(array(
-                        'post_type' => 'attachment',
-                        'post_mime_type' => 'image',
-                        'post_status' => 'inherit',
-                        'posts_per_page' => -1,
-                        'meta_query' => array(
-                            array(
-                                'key' => 'display_in_gallery',
-                                'value' => '1',
-                                'compare' => '='
-                            )
-                        ),
-                        'fields' => 'ids'
-                    ));
+            
+<?php
+// Fonction pour traiter le filtrage AJAX
+function filter_gallery_images() {
+    check_ajax_referer('load_more_images_nonce', 'nonce');
 
-                    $values = array();
-                    foreach ($posts as $post_id) {
-                        $value = get_field($meta_key, $post_id);
-                        if ($value && !in_array($value, $values)) {
-                            $values[] = $value;
-                        }
-                    }
+    $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
+    $format = isset($_POST['format']) ? sanitize_text_field($_POST['format']) : '';
 
-                    foreach ($values as $value) {
-                        echo '<option value="' . esc_attr(strtolower($value)) . '">' . esc_html($value) . '</option>';
-                    }
-                }
-                ?>
+    $args = array(
+        'post_type' => 'attachment',
+        'post_mime_type' => 'image',
+        'post_status' => 'inherit',
+        'posts_per_page' => 8,
+        'meta_query' => array(
+            array(
+                'key' => 'display_in_gallery',
+                'value' => '1',
+                'compare' => '='
+            )
+        ),
+        'tax_query' => array(
+            'relation' => 'AND',
+            array(
+                'taxonomy' => 'category', // Remplacez par la taxonomie appropriée
+                'field' => 'slug',
+                'terms' => $category,
+                'operator' => !empty($category) ? 'IN' : 'EXISTS'
+            ),
+            array(
+                'taxonomy' => 'format', // Remplacez par la taxonomie appropriée
+                'field' => 'slug',
+                'terms' => $format,
+                'operator' => !empty($format) ? 'IN' : 'EXISTS'
+            )
+        )
+    );
 
-                <select id="filter-category" name="category">
-                    <option value="">Catégorie</option>
-                    <?php generate_filter_options('categorie'); ?>
-                </select>
+    $query = new WP_Query($args);
 
-                <select id="filter-format" name="format">
-                    <option value="">Format</option>
-                    <?php generate_filter_options('format'); ?>
-                </select>
-            </div>
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            // Générer le HTML pour chaque image
+        }
+    } else {
+        wp_send_json_error('no_more_images');
+    }
+
+    wp_reset_postdata();
+    wp_die();
+}
+add_action('wp_ajax_filter_gallery_images', 'filter_gallery_images');
+add_action('wp_ajax_nopriv_filter_gallery_images', 'filter_gallery_images');
+
+?>
+<div class="filter-left">
+<select id="filter-category" name="category">
+    <option value="">Catégorie</option>
+    <?php generate_filter_options('category'); ?>
+</select>
+
+<select id="filter-format" name="format">
+    <option value="">Format</option>
+    <?php generate_filter_options('format'); ?>
+</select>
+</div>
             
             <select id="filter-order" name="order">
                 <option value="">Trier par</option>
@@ -97,7 +124,6 @@ if ($query->have_posts()) {
                 <option value="desc">Décroissant</option>
             </select>
         </form>
-    </div>
 
     <!-- Galerie -->
     <div class="gallery">
@@ -108,23 +134,31 @@ if ($query->have_posts()) {
                     $image_id = get_the_ID();
                     $image_url = wp_get_attachment_url($image_id);
                     $image_title = get_the_title($image_id);
-                    $image_category = strtolower(get_field('categorie', $image_id));
+                    $image_category = get_field('category', $image_id);
                     $image_year = get_field('annee', $image_id);
-                    $image_format = strtolower(get_field('format', $image_id));
+                    $image_format = get_field('format', $image_id);
                     $single_photo_page_url = get_permalink(get_page_by_path('single-photo')) . '?image_id=' . $image_id;
                     ?>
-        
-                    <div class="gallery-item" data-category="<?php echo esc_attr($image_category); ?>" data-format="<?php echo esc_attr($image_format); ?>" data-year="<?php echo esc_attr($image_year); ?>">
-                        <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>" width="100%">
-                        <div class="overlay">
-                            <a href="<?php echo esc_url($single_photo_page_url); ?>" class="icon eye-icon" title="Voir les informations">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                            <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" title="Voir en plein écran" data-lightbox="gallery">
-                                <i class="fa fa-expand"></i>
-                            </a>
-                        </div>
-                    </div>
+
+<!-- light box -->
+        <div class="gallery-item" data-category="<?php echo esc_attr($image_category); ?>" data-format="<?php echo esc_attr($image_format); ?>" data-year="<?php echo esc_attr($image_year); ?>">
+    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>" width="100%">
+    <div class="overlay">
+        <!-- Icone plein écran en haut à gauche -->
+        <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" data-fancybox="gallery" title="Voir en plein écran">
+            <i class="fa fa-expand"></i>
+        </a>
+        <!-- Icone d'information au centre -->
+        <a href="<?php echo esc_url($single_photo_page_url); ?>" class="icon eye-icon" title="Voir les informations">
+            <i class="fa fa-eye"></i>
+        </a>
+        <!-- Référence en bas à gauche -->
+        <div class="photo-title"><?php echo esc_html($image_title); ?></div>
+        <!-- Catégorie en bas à droite -->
+        <div class="photo-category"><?php echo esc_html($image_category); ?></div>
+    </div>
+</div>
+
                 <?php endwhile; ?>
             <?php else : ?>
                 <p>Aucune image trouvée dans la galerie.</p>
@@ -134,6 +168,7 @@ if ($query->have_posts()) {
         </div>
 
         <!-- Bouton Charger plus -->
+         
         <div class="load-more-wrapper">
             <button id="load-more" class="btn_contact2" data-page="1">Charger plus</button>
         </div>

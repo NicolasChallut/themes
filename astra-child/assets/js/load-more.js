@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
             url: load_more_params.ajax_url,
             type: 'POST',
             data: {
-                action: 'load_more_images',
+                action: 'chld_thm_cfg_load_more_images',  // Nom de l'action corrigé
                 page: page,
                 nonce: load_more_params.nonce
             },
@@ -26,6 +26,10 @@ jQuery(document).ready(function($) {
                     button.data('page', page + 1);
                     button.text('Charger plus');
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log('AJAX Error: ', error);
+                button.text('Erreur lors du chargement');
             }
         });
     });
