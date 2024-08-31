@@ -10,17 +10,126 @@ Version: 4.6.3.1706785621
 Updated: 2024-02-01 11:07:01
 
 */
+@media  screen and (max-width:921px) {
+    #astra-footer-menu {
+        gap: 24px !important;
+        text-align: center !important;
+    }
+
+    .ast-mobile-popup-drawer .ast-mobile-popup-header {
+        background-image: url('./assets/photos/Nathalie\ Mota.png'); /* Chemin de votre logo */
+        background-size:15%; /* Ajuste la taille pour qu'elle soit contenue dans l'élément */
+        background-repeat: no-repeat; /* Évite la répétition de l'image */
+        background-position: center; /* Centre l'image de fond */
+        height: 80px; /* Ajustez selon la taille du logo */
+    }
+
+    .content-align-flex-start .ast-builder-layout-element{
+        height: 812px;
+        background-color:#E00000 !important;
+    
+    }
+
+    .ast-builder-menu-1 .menu-item > .menu-link{
+        font-size: 44px !important;
+    }
+
+    .content-align-flex-start .ast-builder-layout-element a{
+        border: none !important;
+    }
+
+    .content-align-flex-start .main-header-menu{
+        text-align: center !important;
+    }
+
+}
+
+@media screen and (max-width:1200px ) {
+
+    #filter-form select{
+        margin:0 0 8px 0 !important;
+    }
+
+    .filters{
+        flex-direction: column;
+        align-content: center;
+        justify-content: center !important;
+        flex-wrap: wrap;
+        gap: 0 !important;
+        height: 195px !important;
+        width: auto !important;
+    }
+    .filter-left,.filter-right{
+        flex-direction: column;
+        margin-left:0 !important;
+        
+    }
+
+    #filter-form{
+        justify-content: center !important;
+    }
+
+    .photo-gallery, .gallery_singlephoto{
+        flex-direction: column !important;
+        align-content: center !important;
+    }
+
+    .gallery-item{
+        width: auto !important;
+    }
+
+    .section{
+        flex-direction: column-reverse !important;
+        align-items: center;
+        
+    }
+    .left-column{
+        align-content: flex-start !important;
+    }
+    
+    .left-column2{
+        width: 100%;
+    }
+
+    .interest{
+        flex-direction: column !important;
+    }
+    .right-column2{
+        display: none;
+    }
+
+    .uppercase{
+        text-align: center;
+    }
+}
+
+.ast-above-header-bar .site-above-header-wrap{
+    max-width: 1920px;
+}
+
+.ast-builder-grid-row>.site-header-section {
+margin-left: 15px;
+}
+
+#filter-category select{
+    background-color: #fff !important;
+}
+
+.ast-mobile-popup-inner{
+
+    display: flex !important;
+}
+
 .site-header{
     box-shadow: 0px 4px 14px 10px rgba(0, 0, 0, 0.03);
 }
 
 .photo-gallery {
     display: flex;
-    gap: 10px;
     justify-content: space-between;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 1200px;
+    margin: 0 20px 0 20px;
 }
 
 .photo-card {
@@ -44,18 +153,16 @@ Updated: 2024-02-01 11:07:01
 }
 
 .header-image {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    width: max-content;
-    height: 966px;
+    width: 100%;
+    max-height: 996px;
+    position: relative;
+    overflow: hidden; /* Assure que l'image ne déborde pas de la zone de .header */
 }
 
 .header-image img {
-    max-width: 100%;
-    height: auto; /* Assure que l'image est responsive */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 
@@ -147,27 +254,51 @@ form textarea{
 /* form filter */
 #filter-form{
     display:flex;
-    width: 1200px;
+   
     justify-content: space-between;
+}
+
+.filters{
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    width: 100%;
+    height: 140px;
+    gap: 40px;
 }
 
 .filter-left{
     display: flex;
     justify-content: space-between;
-    width: 580px;
+    margin-left: 20px;
+    max-width: 560px;
+    width: 50%;
+}
+
+.filter-right{
+    display: flex;
+    justify-content:flex-end;
+    margin-right: 20px;
 }
 
 #filter-form select{
     border-radius: 8px;
     border: 1.3px solid var(--Blues-Gray2, #B8BBC2);
+    height: 42px;
     width: 260px;
     margin:80px 0 40px 0;
 }
 
+.filter-controls {
+position: relative;
+max-width: 1200px;
+width: 100%;
+}
 
 .filter-controls select {
     margin-right: 10px; /* Ajoute un espace entre chaque menu déroulant */
     padding: 5px; /* Ajoute du padding pour un meilleur aspect visuel */
+    
 }
 /*lightbox*/
 
@@ -177,10 +308,8 @@ form textarea{
     margin-bottom: 20px;
 }
 
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    display: block;
+.gallery_content{
+    display: flex;
 }
 
 .overlay {
@@ -271,12 +400,16 @@ form textarea{
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    width: 100%;
+    max-width: 1200px;
 }
 .section2{
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    height: 118px;
+    min-height: 118px;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .interest{
@@ -284,17 +417,23 @@ form textarea{
     align-content: center;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 50%;
+    width: 100%;
 }
 
 .left-column {
     display: flex;
-    align-content: flex-end;
+    align-content: flex-start;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-end;
+    max-width: 563px;
+    width: 100%;
 }
 
+.left-column2{
+    max-width: 630px;
+    width: 100%;
+}
 .gallery_singlephoto{
     display: flex;
     gap: 20px;
@@ -305,6 +444,7 @@ form textarea{
     font-style: italic;
     font-weight: 400;
     text-transform: uppercase;
+    max-width: 400px;
 }
 
 .info-photo {
@@ -329,9 +469,17 @@ form textarea{
     border: 0;
     height: 1px;
     background: #000;
-    width: 50%;
+    width: 100%;
+    max-width: 1200px;
 }
 
+.like{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+
+}
 .photo-interest {
     text-align: left;
 }
@@ -361,6 +509,7 @@ form textarea{
     width: 272px;
     height: 50px;
     padding: 8px 15px;
+    margin-bottom: 10px;
 }
 
 .next {
@@ -390,62 +539,83 @@ form textarea{
 }
 
 .right-column {
-    width: 563px; 
+    max-width: 563px; 
     height: 844px; 
     object-fit: cover;
 }
 
-.right-column2 img{
-    height: 81px;
-    width: 71px;
+.right-column2 {
     position: relative;
-}
-
-
-.arrows {
-    position: absolute;
     width: 71px;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    height: 81px;
+    object-fit: cover;
 }
 
-.arrow-left, .arrow-right {
-    text-decoration: none;
-    font-size: 24px;
-    color: #000;
+.right-column2 img {
+    width: 100%;
+    height: 81px;
+    object-fit: cover;
+    margin-top: 8px;
 }
+
 
 .thumbnails {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    height: 71px;
-    width: 81px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .thumbnail {
-    width: 100px; /* Adjust as needed */
-    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .preview-prev {
-    position: absolute;
-    left: -120px; /* Adjust positioning */
+    z-index: 10; /* S'assure que l'image précédente s'affiche au-dessus */
 }
 
 .preview-next {
-    position: absolute;
-    right: -120px; /* Adjust positioning */
+    z-index: 5; /* S'assure que l'image suivante reste en dessous */
 }
 
-.arrow-left:hover + .thumbnails .preview-prev,
-.arrow-right:hover + .thumbnails .preview-next {
+
+
+.arrows {
+    position: absolute;
+    width: 100px; /* Ajustez selon la taille de vos images */
+    display: flex;
+    justify-content: space-around;
+    top: 96px; /* Ajustez selon la position désirée */
+    left: 40px;
+    transform: translateX(-50%);
+}
+
+.arrow-left, .arrow-right {
+    width: 25px;
+    height: 5px;
+    display: block;
+    background-size: contain; /* Pour ajuster l'image à la taille de l'élément */
+    background-repeat: no-repeat;
+    text-indent: -9999px; /* Cache le texte de la flèche si présent */
+}
+
+.arrow-left {
+    background-image: url('./assets/photos/before.png'); /* Chemin vers votre image de flèche gauche */
+}
+
+.arrow-right {
+    background-image: url('./assets/photos/next.png'); /* Chemin vers votre image de flèche droite */
+}
+.arrow-left:hover ~ .thumbnails .preview-prev {
     opacity: 1;
 }
-
 /*footer*/
 #astra-footer-menu{
     gap: 86px;

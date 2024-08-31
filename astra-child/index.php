@@ -31,7 +31,7 @@ if ($query->have_posts()) {
     $images = $query->posts;
     $random_image = $images[array_rand($images)];
     $header_image_url = wp_get_attachment_url($random_image->ID);
-    $overlay_image_url = wp_get_attachment_url(31);
+    $overlay_image_url = wp_get_attachment_url(6039);
 }
 ?>
 
@@ -47,13 +47,12 @@ if ($query->have_posts()) {
 <?php endif; ?>
 
 <!-- Formulaire de tri -->
-<div class="main-content">
-    <div class="filter-controls">
-        <form id="filter-form">
-            
+
+
 <?php
 // Fonction pour traiter le filtrage AJAX
-function filter_gallery_images() {
+function filter_gallery_images()
+{
     check_ajax_referer('load_more_images_nonce', 'nonce');
 
     $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
@@ -106,28 +105,35 @@ add_action('wp_ajax_filter_gallery_images', 'filter_gallery_images');
 add_action('wp_ajax_nopriv_filter_gallery_images', 'filter_gallery_images');
 
 ?>
-<div class="filter-left">
-<select id="filter-category" name="category">
-    <option value="">Catégorie</option>
-    <?php generate_filter_options('category'); ?>
-</select>
 
-<select id="filter-format" name="format">
-    <option value="">Format</option>
-    <?php generate_filter_options('format'); ?>
-</select>
-</div>
-            
-            <select id="filter-order" name="order">
-                <option value="">Trier par</option>
-                <option value="asc">Croissant</option>
-                <option value="desc">Décroissant</option>
-            </select>
+<div class="main-content">
+    <div class="filter-controls">
+        <form id="filter-form">
+            <div class="gallery">
+
+                <div class="filters">
+                    <div class="filter-left">
+                        <select id="filter-category" name="category">
+                            <option value="">Catégorie</option>
+                            <?php generate_filter_options('category'); ?>
+                        </select>
+
+                        <select id="filter-format" name="format">
+                            <option value="">Format</option>
+                            <?php generate_filter_options('format'); ?>
+                        </select>
+                    </div>
+
+                    <div class="filter-right">
+                        <select id="filter-order" name="order">
+                            <option value="">Trier par</option>
+                            <option value="asc">Croissant</option>
+                            <option value="desc">Décroissant</option>
+                        </select>
+                    </div>
+                </div>
         </form>
-
-    <!-- Galerie -->
-    <div class="gallery">
-        <div id="photo-gallery" class="photo-gallery two-columns">
+        <div id="photo-gallery" class="photo-gallery">
             <?php if ($query->have_posts()) : ?>
                 <?php while ($query->have_posts()) : $query->the_post(); ?>
                     <?php
@@ -140,12 +146,11 @@ add_action('wp_ajax_nopriv_filter_gallery_images', 'filter_gallery_images');
                     $single_photo_page_url = get_permalink(get_page_by_path('single-photo')) . '?image_id=' . $image_id;
                     ?>
 
-<!-- light box -->
-        <div class="gallery-item" data-category="<?php echo esc_attr($image_category); ?>" data-format="<?php echo esc_attr($image_format); ?>" data-year="<?php echo esc_attr($image_year); ?>">
+<div class="gallery-item" data-category="<?php echo esc_attr($image_category); ?>" data-format="<?php echo esc_attr($image_format); ?>" data-year="<?php echo esc_attr($image_year); ?>">
     <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>" width="100%">
     <div class="overlay">
         <!-- Icone plein écran en haut à gauche -->
-        <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" data-fancybox="gallery" title="Voir en plein écran">
+        <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" data-fancybox="gallery" title="Voir en plein écran" data-caption="<?php echo esc_html($image_title) . ' - ' . esc_html($image_category); ?>">
             <i class="fa fa-expand"></i>
         </a>
         <!-- Icone d'information au centre -->
@@ -168,11 +173,10 @@ add_action('wp_ajax_nopriv_filter_gallery_images', 'filter_gallery_images');
         </div>
 
         <!-- Bouton Charger plus -->
-         
+
         <div class="load-more-wrapper">
             <button id="load-more" class="btn_contact2" data-page="1">Charger plus</button>
         </div>
     </div>
 </div>
-
 <?php get_footer(); ?>
