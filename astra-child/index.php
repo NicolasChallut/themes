@@ -150,9 +150,10 @@ add_action('wp_ajax_nopriv_filter_gallery_images', 'filter_gallery_images');
     <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_title); ?>" width="100%">
     <div class="overlay">
         <!-- Icone plein écran en haut à gauche -->
-        <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" data-fancybox="gallery" title="Voir en plein écran" data-caption="<?php echo esc_html($image_title) . ' - ' . esc_html($image_category); ?>">
-            <i class="fa fa-expand"></i>
-        </a>
+        <a href="<?php echo esc_url($image_url); ?>" class="icon fullscreen-icon" data-fancybox="gallery" title="Voir en plein écran" data-caption="<span class='fancybox-title'><?php echo esc_html($image_title); ?></span> <span class='fancybox-category'><?php echo esc_html($image_category); ?></span>">
+    <i class="fa fa-expand"></i>
+</a>
+
         <!-- Icone d'information au centre -->
         <a href="<?php echo esc_url($single_photo_page_url); ?>" class="icon eye-icon" title="Voir les informations">
             <i class="fa fa-eye"></i>

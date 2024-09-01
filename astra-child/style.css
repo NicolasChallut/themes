@@ -88,7 +88,7 @@ Updated: 2024-02-01 11:07:01
     }
     
     .left-column2{
-        width: 100%;
+        max-width: 1200px !important;
     }
 
     .interest{
@@ -352,6 +352,30 @@ width: 100%;
     z-index: 1000;
 }
 
+.fancybox-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.fancybox-title {
+    text-align: left;
+    font-weight: bold;
+}
+
+.fancybox-category {
+    text-align: right;
+    font-style: italic;
+}
+
+.fancybox-caption__body {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
 /* Icone plein écran en haut à gauche */
 .fullscreen-icon {
     position: absolute;
@@ -379,11 +403,12 @@ width: 100%;
 
 
 /* header images*/
-.background_logo{
+.background_logo {
     position: absolute;
-    width: 1000px; 
-    height: 142px; 
-    z-index: 10;
+    top: 50%;    /* Ajustez cette valeur selon vos besoins */
+    left: 50%;   /* Ajustez cette valeur selon vos besoins */
+    transform: translate(-50%, -50%); /* Centre le logo horizontalement et verticalement */
+    z-index: 10; /* Assurez-vous que le logo soit au-dessus de l'image */
 }
 /* Main Content Styles */
 .main-content {
